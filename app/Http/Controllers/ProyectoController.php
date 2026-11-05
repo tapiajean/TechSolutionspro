@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
+use Illuminate\Support\Facades\Http;
 
 class ProyectoController extends Controller 
 {
@@ -13,7 +14,24 @@ class ProyectoController extends Controller
     public function index()
     {
     $proyectos = Proyecto::all();
-    return view('proyectos.index', compact('proyectos'));
+    $ufActual = null;
+try {
+    $response = Http::withoutVerifying()
+    ->withUserAgent('Mozilla/5.0')
+    ->get('https://mindicador.cl/api/uf');
+
+        if ($response->successful()){
+            $data = $response->json();
+            
+            if (isset($data['serie'])&& count ($data['serie']) > 0){
+            $ufActual = $response->json()['serie'][0]['valor']?? null;
+        }
+    }
+            
+    }catch(\Exception $e){
+        $ufActual = null;
+    }
+    return view('proyectos.index', compact('proyectos', 'ufActual'));
     }
 
     /**

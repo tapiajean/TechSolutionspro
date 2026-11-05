@@ -1,110 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Proyecto</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-warning text-dark">
-                        <h4 class="mb-0">Editar Proyecto</h4>
-                    </div>
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
 
-                        <form action="{{ route('proyectos.update', $proyecto->id) }}" method="POST">
-                            @csrf
-                            @method('PUT') <!-- Requerido en Laravel para actualizar registros -->
 
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre del Proyecto</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', $proyecto->nombre) }}" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="descripcion" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required>{{ old('descripcion', $proyecto->descripcion) }}</textarea>
-                            </div>
+@extends('layouts.app')
 
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">Volver</a>
-                                <button type="submit" class="btn btn-primary">Actualizar Proyecto</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+@section('content')
+<div class="container mt-4">
+    <h2>Editar Proyecto</h2>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Proyecto</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">Registrar Nuevo Proyecto</h4>
-                    </div>
-                    <div class="card-body">
-                        <!-- Mostramos errores de validación si los hay -->
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+    @endif
 
-                        <form action="{{ route('proyectos.store') }}" method="POST">
-                            @csrf <!-- Token de seguridad obligatorio en Laravel -->
-
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre del Proyecto</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre') }}" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="descripcion" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required>{{ old('descripcion') }}</textarea>
-                            </div>
-
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">Volver</a>
-                                <button type="submit" class="btn btn-success">Guardar Proyecto</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <form action="{{ route('proyectos.update', $proyecto->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Proyecto</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', $proyecto->nombre) }}" required>
         </div>
-    </div>
-</body>
-</html>
-16:25
 
+        <div class="mb-3">
+            <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ old('fecha_inicio', $proyecto->fecha_inicio) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <input type="text" class="form-control" id="estado" name="estado" value="{{ old('estado', $proyecto->estado) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="responsable" class="form-label">Responsable</label>
+            <input type="text" class="form-control" id="responsable" name="responsable" value="{{ old('responsable', $proyecto->responsable) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="monto" class="form-label">Monto</label>
+            <input type="number" step="0.01" class="form-control" id="monto" name="monto" value="{{ old('monto', $proyecto->monto) }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Actualizar Proyecto</button>
+        <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+@endsection
 
 
